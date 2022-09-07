@@ -1,5 +1,35 @@
 # k6 Load Testing
 
+## Performance Testing
+
+Performance testing measures qualiative aspects of a user's experience of a system, such as responsiveness and success rate.
+
+Load testing is not performance testing. Performance testing determines how well a system works as a whole, whilst load testing a type of performance testing that focuses on verifying and validating the performance of an application whilst it has significant volume of tasks to process.
+
+### Frontend Performance Testing
+
+- Frontend end performance testing requires a fully built application deployed on a fully integrated platform
+- Testing tools executed on client side and don't give enough insight into backend components
+
+### Backend Performance Testing
+
+- Targets the underlying application servers to verifiy:
+    - Scalability: Can the system adjust to steadily increasing levels of demand?
+    - Elasticity: Can the system conserve resources during periods of lower demand?
+    - Availability: What is the uptime of each of the components in the system?
+    - Reliability: Does the system respond consistently in different environmental conditions?
+    - Resiliency: Can the system gracefully withstand unexpected events?
+    - Latency: How quickly does the system process and respond to requests?
+
+Source: https://github.com/grafana/k6-learn/blob/main/Modules/Introduction%20to%20Performance%20Testing.md
+
+### Why?
+
+- Improve user experience
+- Prepare for unexpected demand
+- Increased confidence in the application
+- Assess and optimize infrastructure
+
 ## Running tests
 
 With options including `vu` and `duration`, for example:
@@ -27,6 +57,39 @@ export function teardown(data) {
 ```
 
 See https://k6.io/docs/using-k6/test-life-cycle/ for more info.
+
+## Think time
+
+The amount of time a script pauses to simulate delays a real user would have using an application. For example, this can be when a user follows a flow through the system or to simulate time to carry out actions such as reading text or filling out a form.
+
+**Best practice**: include dynamic think time instead of hardcoding a value.
+
+See: https://github.com/grafana/k6-learn/blob/main/Modules/Adding%20think%20time%20using%20sleep.md#dynamic-think-time
+
+## Thresholds
+Source: https://github.com/grafana/k6-learn/blob/main/Modules/Setting%20test%20criteria%20with%20thresholds.md
+
+Thresholds are used to determine whether a test passes or fails. Types of thresholds are `error rate`, `response time`, and `checks`.
+
+### Error Rate
+
+Use `http_req_failed` metric to set threshold for error rate.
+
+**Best practice**: error rate guidance depending on application:
+
+- Mission critical apps: 1%
+- Non critical apps: 5%
+- DR testing: 10-15%
+
+### Response Time
+
+Use `http_req_duration` metric to set threshold for response time. Can use `avg`, `min`, `max`, `percentiles`.
+
+**Best practice**: Use 95th percentile response time of 2 seconds as starting point
+
+### Checks
+
+Use checks to make tests fail a certain check error rate is reached. This is the overall error rate of the tests rather than the rates expressed in metrics for failed requests or response time.
 
 ## Metric Definitions
 
@@ -161,3 +224,9 @@ export let options = {
 };
 
 ```
+
+## Resources
+
+- Getting Started: https://k6.io/docs/getting-started/resources/
+- Test servers: https://k6.io/docs/getting-started/resources/#test-servers
+- k6 learn: https://github.com/grafana/k6-learn
